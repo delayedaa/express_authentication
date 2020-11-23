@@ -7,6 +7,9 @@ let flash = require('connect-flash');
 let SECRET_SESSION = process.env.SECRET_SESSION;
 const app = express();
 
+// isLoggedIn middleware
+let isLoggedIn = require('./middleware/isLoggedIn');
+
 app.set('view engine', 'ejs');
 
 app.use(require('morgan')('dev'));
