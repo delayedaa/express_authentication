@@ -47,3 +47,19 @@ module.exports = (sequelize, DataTypes) => {
   });
   return user;
 };
+
+user.addHook('beforeCreate', pendingUser => {
+  let hash = bcrypt.hashSync(pendingUser.password, 12);
+  pendingUser.password = hash;
+});
+
+user.prototype.validPassword = passwordTyped => {
+  let correctPassword = bcrypt.compareSync(passwordTyped, this.password);
+  return correctPassword;
+};
+
+user.prototype.toJSON = () => {
+  let userData = this.get();
+  delete userData.password;
+  return userData;
+};
